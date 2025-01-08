@@ -6,6 +6,8 @@ import AttendanceBook from './chapter_10/AttendanceBook';
 import MyForm from './chapter_11/MyForm';
 import Multiple from './chapter_11/Multiple';
 import Calculator from './chapter_12/Calculator';
+import ProfileCard from './chapter_13/ProfileCard';
+import Acommodate from './chapter_07/Acommodate';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -37,7 +39,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
       {/* <NumberList numbers={[1,2,3,4,5]} /> */}
       {/* <AttendanceBook /> */}
       {/* <Multiple/> */}
-      <Calculator/>
+      {/* <Calculator/> */}
+      {/* <ProfileCard/> */}
+      <Acommodate/>
     </>
   );
 // }, 1000);
