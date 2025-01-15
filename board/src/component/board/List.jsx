@@ -1,6 +1,6 @@
 
 import React, { useEffect} from 'react';
-import {useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 
 const List = () => {
@@ -22,7 +22,7 @@ const List = () => {
     <div>
       <button onClick={()=>navigate('/write')}>글쓰기</button>
       <ul>
-        {data && data.map(b => <li key={b.num}>{b.title}</li>)}
+        {data && data.map(b => <Link to={`/view/${b.num}`} key={b.num}>{b.title}</Link>)}
       </ul>
     </div>
   );
