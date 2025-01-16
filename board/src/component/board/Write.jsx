@@ -1,105 +1,82 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import { useAuth } from '../hooks/AuthContext';
 const Write = () => {
-  // const [title,setTitle] = useState('');
-  // const [content,setContent] = useState('');
-  // const [memberEmail,setMemberEmail] = useState('');
-  const [file, setFile] = useState(null);
-  const [uploadStatus, setUploadStatus] = useState('');
-  const [uploadedFileKey, setUploadedFileKey] = useState('');
-  const {email,token} = useAuth();
-  const [board,setBoard] = useState({
-    title :'',
-    content : '',
-    writer : ''
-  });
 
+  const { email } = useAuth();
   const navigate = useNavigate();
-  const {req} = useAxios();
+  const [uploaded,setUploaded] = useState([]);
+  const { req } = useAxios();
+  
 
-  useEffect(() => {
-    setBoard(prev => ({...prev,writer:email}));
-  },[email])
+  const [ board, setBoard ] = useState({
+    title:'',
+    content:'',
+    writer: email,
+    attachDtos: []}
+  );
 
-
-  const handleChage = e => {
-    const {name,value} = e.target;
-    setBoard({...board, [name] : value})
+  const handleChange = e => {
+    const {name, value} = e.target;
+    setBoard({...board, [name] : value});
   }
+
   const handleSubmit = e => {
-    e.preventDefault();
-    console.log(board);
-    req('post','notes/register',board);
-    alert('글쓰기 성공');
+      console.log(board);
+      req('post','notes/register',{...board,attachDtos : uploaded});
+    
+
+    alert("글쓰기 성공");
     navigate("/list");
   }
-  
-    //   (async () => {
-    //   try {
-    //    const resp = await axios({
-    //     url : 'http://localhost:8080/api/v1/board',
-    //     method : 'post',
-    //    }); 
-    //   } catch (error) {
 
-    //   } finally{
-
-    //   }
-    // })();
-    //   //언마운트 시 할일
-    //   return () => {
-  
-    //   };
-    const handleFileUpload = async e => {
-      const file = e.target.files[0];
-      if(!file) return;
-      console.log(file);
-      const formData = new FormData();
-      formData.append("file", file);
+  const handleFileUpload = async (e) => {
+    const files = e.target.files;
     
-      try {
-        const headers ={
-          'Authorization' : `Bearer ${token}`
-        }
-        const response = await fetch("http://localhost:8080/api/v1/file/upload", {
-          method: "POST",
-          body: formData,
-          headers
-          
-        });
-    
-        const result = await response.json();
-        if (result.status === "success") {
-          console.log("File uploaded successfully:", result.data);
-        } else {
-          console.error("Upload failed:", result.message);
-        }
-        const data = response.data;
-      setUploadStatus(result.message);
-      setUploadedFileKey(data);
-      console.log("서버 응답:",uploadedFileKey);
+    if (!files) return;
+    console.log(files);
 
-      } catch (error) {
-        console.error("Error during upload:", error);
-      }
-      
-    };
-  
+
+    const formData = new FormData();
+    for(let i = 0; i < files.length; i++){
+      formData.append('file', files[i]);
+    }
+    console.log(formData);
+
+    try {
+
+      const result = await req("post", "file/upload", formData, {'Content-Type' : 'multipart/form-data'})
+      console.log(result);
+      setUploaded([...uploaded,...result]);
+
+
+    } catch (error) {
+      console.error("Error during upload:", error);
+    }
+
+    e.target.value = '';//선택된 파일없음 쉽게만듬
+  };
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
       <h1>Write</h1>
-      <input type='text' placeholder='글제목' name='title' id="title"onChange={handleChage} value={board.title}/>
-      <input type='text' placeholder='글내용' name="content" id="content"onChange={handleChage} value={board.content}/>
-      <input type='text' placeholder='글작성자'name="memberEmail" id="memberEmail"onChange={handleChage} value={board.writer}/>
-      <input type='file' onChange={handleFileUpload}/>
-      <button >글목록</button>
+      <form onSubmit={e => {
+        e.preventDefault();
+        handleSubmit();
+      }} encType=''>
+        <input type='text' name="title" value={board.title} onChange={handleChange}/>
+        <input type='text' name="content" value={board.content} onChange={handleChange}/>
+        <input type='text' name="memberEmail" value={board.writer} onChange={handleChange}/>
+        <button>클릭</button>
+        <input type='file' onChange={handleFileUpload} name='file' multiple />
       </form>
+      <ul>
+        {uploaded.map(u => <li key={u.uuid}><Link to={u.url}>{u.origin}</Link>
+        {u.s3Key}<button data-uuid={u.uuid} onClick={e => setUploaded(uploaded.filter(file => file.uuid !== e.currentTarget.dataset.uuid)) }>삭제</button></li>)}
+      </ul>
     </div>
-    
   );
 }
 

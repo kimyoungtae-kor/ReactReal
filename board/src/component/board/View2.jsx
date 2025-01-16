@@ -50,6 +50,13 @@ const View2 = () => {
     <input type='text' placeholder='글작성자'name="memberEmail" id="memberEmail" value={data.writer} readOnly/>
     <p></p>
     <Link to={`/modify/${data.num}`}><button>수정</button></Link>
+
+    <div>
+      <h3>attach : {data.attachDtos.length}</h3>
+      <ul>
+        {data.attachDtos.map(a => <li key={a.uuid}><Link to={a.url}>{a.origin}</Link></li>)}
+      </ul>
+    </div>
     <button >글목록</button> <button onClick={handleDelete}>삭제</button>
     </form>
   </div>
