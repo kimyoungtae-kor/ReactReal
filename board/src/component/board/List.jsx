@@ -22,7 +22,7 @@ const List = () => {
     <div>
       <button onClick={()=>navigate('/write')}>글쓰기</button>
       <ul>
-        {data && data.map(b => <li><Link to={`/view/${b.num}`} key={b.num}>{b.title}</Link></li>)}
+        {data && data.map(b => <li><Link to={`/view/${b.num}`} key={b.num}>{b.title}</Link><span>좋아요{b.likesCnt}</span><span>{b.attachCnt > 0 && 'm'}</span></li>)}
       </ul>
     </div>
   );
