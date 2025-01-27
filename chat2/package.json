@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "react-scripts": "^5.0.1",
-    "yarn": "^1.22.22"
+    "yarn": "^1.22.22",
+    "proxy": "http://localhost:3000"
   }
+  
 }
