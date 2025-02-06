@@ -7,13 +7,14 @@ const Posts = () => {
   // ajax 구문
   // axios
   const [posts, setPosts] = useState([]); //데이터
-  const [loading, setLoading] = useState(true); //로딩
+  const [aaa, setLoading] = useState(true); //로딩
   const [error, setError] = useState(null); //에러
 
   useEffect(()=> {
     const getList = async() => {
       try {
         const resp = await axios.get("https://jsonplaceholder.typicode.com/posts");
+        console.log(resp.data)
         setPosts(resp.data);
       }
       catch(err) {
@@ -27,7 +28,7 @@ const Posts = () => {
     getList();
   }, []);
   // 로딩
-  if(loading) {
+  if(aaa) {
     return (
     <>
       <Container className='text-center mt-5'>
