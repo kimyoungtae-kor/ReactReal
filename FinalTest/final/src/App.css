@@ -1,6 +1,6 @@
 .custom-toast {
-  background-color: #333 !important;
-  color: #ccc !important;
+  background-color: #fff !important;
+  color: #111 !important;
   border-radius: 0.5em !important;
 }
 
@@ -17,10 +17,12 @@ button {
   font-style: italic;
   color: inherit;
   line-height: 1;
-  box-shadow: 3px 3px 0 0 #999;
+  /* box-shadow: 3px 3px 0 0 #999; */
 }
 
 button:hover {
   background-color: #eee;
-  box-shadow: 2px 2px 0 0 #999;
+  /* box-shadow: 2px 2px 0 0 #999; */
 }
+
+.modal .modal-header .modal-title {text-shadow: #111 0 0 3px; font-size: 1.2em; }

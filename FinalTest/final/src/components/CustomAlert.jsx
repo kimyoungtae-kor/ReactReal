@@ -15,7 +15,7 @@ const CustomAlert = () => {
 
   return (
     <div className="btn-group">
-      <Button variant="primary" onClick={() => showAlert("성공적으로 처리되었습니다!", "primary")}>
+      <Button variant="success" onClick={() => showAlert("성공적으로 처리되었습니다!", "primary")}>
         Success
       </Button>
       <Button variant="danger" onClick={() => showAlert("오류가 발생했습니다!", "danger")}>
